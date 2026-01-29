@@ -1,5 +1,7 @@
 # coding: utf-8
 import sys, os
+import time
+
 sys.path.append(os.pardir)  # 为了导入父目录的文件而进行的设定
 import numpy as np
 from collections import OrderedDict
@@ -158,3 +160,27 @@ class MultiLayerNet:
             grads['b' + str(idx)] = self.layers['Affine' + str(idx)].db
 
         return grads
+
+    def save_weight(self, file_name=None):
+        if file_name is None:
+            # 使用整数时间戳，避免非法字符
+            file_name = f"model_weights_{int(time.time())}.npz"
+
+        # 确保保存的是目前的参数
+        np.savez(file_name, **self.params)
+        print(f"Weights saved to {file_name}")
+
+    def load_weight(self, file):
+        data = np.load(file)
+        # 逐个更新参数，而不是替换整个字典引用
+        for key in self.params.keys():
+            if key in data:
+                self.params[key] = data[key]
+            else:
+                print(f"Warning: {key} not found in {file}")
+
+        # 关键一步：必须同步更新每一层中的权重引用
+        for idx in range(1, self.hidden_layer_num + 2):
+            self.layers['Affine' + str(idx)] = Affine(self.params['W' + str(idx)],
+                                                      self.params['b' + str(idx)])
+        print("Weights loaded and layers updated.")

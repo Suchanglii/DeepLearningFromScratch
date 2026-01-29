@@ -36,7 +36,7 @@ class Sigmoid:
 
         return dx
 
-
+# 全连接层
 class Affine:
     def __init__(self, W, b):
         self.W =W

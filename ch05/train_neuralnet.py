@@ -11,6 +11,12 @@ from two_layer_net import TwoLayerNet
 
 network = TwoLayerNet(input_size=784, hidden_size=50, output_size=10)
 
+# 使用训练好的参数初始化两层网络
+weight = dict(np.load("model_weights.npz"))
+network.load_params(weight)
+
+learning_rate = 0.001
+iters_num = 1000
 iters_num = 10000
 train_size = x_train.shape[0]
 batch_size = 100
@@ -34,7 +40,7 @@ for i in range(iters_num):
     # 更新
     for key in ('W1', 'b1', 'W2', 'b2'):
         network.params[key] -= learning_rate * grad[key]
-    
+    # 更新完之后，再进行一次损失计算，loss内又会进行一次前向传播，将本批次训练结果进行记录
     loss = network.loss(x_batch, t_batch)
     train_loss_list.append(loss)
     
@@ -44,3 +50,9 @@ for i in range(iters_num):
         train_acc_list.append(train_acc)
         test_acc_list.append(test_acc)
         print(train_acc, test_acc)
+
+# params = {"W1":network.params["W1"],
+#          "b1":network.params["b1"],
+#          "W2":network.params["W2"],
+#          "b2":network.params["b2"]}
+# np.savez("model_weights.npz",**params)

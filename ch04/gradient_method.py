@@ -1,7 +1,9 @@
 # coding: utf-8
 import numpy as np
 import matplotlib.pylab as plt
-from gradient_2d import numerical_gradient
+import sys,os
+sys.path.append(os.pardir)
+from ch04.gradient_2d import numerical_gradient
 
 
 def gradient_descent(f, init_x, lr=0.01, step_num=100):
@@ -26,6 +28,9 @@ lr = 0.1
 step_num = 20
 x, x_history = gradient_descent(function_2, init_x, lr=lr, step_num=step_num)
 
+# print(f'x_history: {x_history}')
+# print(f'x_history[:,0]: {x_history[:,0]}')
+# print(f'x_history[0,:]: {x_history[0,:]};x_history[0]: {x_history[0]}')
 plt.plot( [-5, 5], [0,0], '--b')
 plt.plot( [0,0], [-5, 5], '--b')
 plt.plot(x_history[:,0], x_history[:,1], 'o')

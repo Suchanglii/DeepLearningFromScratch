@@ -53,6 +53,9 @@ for i in range(max_iterations):
             loss = networks[key].loss(x_batch, t_batch)
             print(key + ":" + str(loss))
 
+# 保存训练后的权重
+for key in optimizers.keys():
+    networks[key].save_weight (key)
 
 # 3.绘制图形==========
 markers = {"SGD": "o", "Momentum": "x", "AdaGrad": "s", "Adam": "D"}

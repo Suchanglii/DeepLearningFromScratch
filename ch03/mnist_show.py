@@ -11,6 +11,10 @@ def img_show(img):
     pil_img.show()
 
 (x_train, t_train), (x_test, t_test) = load_mnist(flatten=True, normalize=False)
+print(f'x_test', x_test.shape)
+print(f'x_test[0]', x_test[0])
+print(f'x_test.len', len(x_test))
+print(f'x_test[0].lenth', len(x_test[0]))
 
 img = x_train[0]
 label = t_train[0]

@@ -30,8 +30,9 @@ def numerical_gradient_2d(f, X):
         
         return grad
 
-
+# 微分函数针对的是x变化，会对损失函数造成的影响
 def numerical_gradient(f, x):
+    print(f'x = {x}')
     h = 1e-4 # 0.0001
     grad = np.zeros_like(x)
     

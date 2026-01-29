@@ -23,9 +23,11 @@ class Momentum:
         self.v = None
         
     def update(self, params, grads):
+        # 首次初始化
         if self.v is None:
             self.v = {}
-            for key, val in params.items():                                
+            for key, val in params.items():
+                # v是{params[key]=n维全零数组}
                 self.v[key] = np.zeros_like(val)
                 
         for key in params.keys():

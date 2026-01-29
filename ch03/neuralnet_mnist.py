@@ -1,5 +1,8 @@
 # coding: utf-8
 import sys, os
+
+from ch03.mnist_show import img_show
+
 sys.path.append(os.pardir)  # 为了导入父目录的文件而进行的设定
 import numpy as np
 import pickle
@@ -9,11 +12,11 @@ from common.functions import sigmoid, softmax
 
 def get_data():
     (x_train, t_train), (x_test, t_test) = load_mnist(normalize=True, flatten=True, one_hot_label=False)
-    return x_test, t_test
+    return x_train, t_train, x_test, t_test
 
 
 def init_network():
-    with open("sample_weight.pkl", 'rb') as f:
+    with open("D:\\Documents\\DeepLearningFromScratch\\ch03\\sample_weight.pkl", 'rb') as f:
         network = pickle.load(f)
     return network
 
@@ -32,13 +35,29 @@ def predict(network, x):
     return y
 
 
-x, t = get_data()
+xt, tt, x, t = get_data()
 network = init_network()
+print(f'W1.shape: {network['W1'].shape}, W2.shape: {network['W2'].shape}, W3.shape: {network['W3'].shape}')
+
+
 accuracy_cnt = 0
 for i in range(len(x)):
     y = predict(network, x[i])
-    p= np.argmax(y) # 获取概率最高的元素的索引
+    p = np.argmax(y)  # 获取概率最高的元素的索引
     if p == t[i]:
         accuracy_cnt += 1
 
 print("Accuracy:" + str(float(accuracy_cnt) / len(x)))
+
+n=100
+img = xt[n]
+print(img.shape)  # (784,)
+y = predict(network, img)
+print(f'predict result: {np.argmax(y)},label: {tt[n]}')
+
+img = img.reshape(28, 28)   # 把图像的形状变为原来的尺寸
+print(img.shape)  # (28, 28)
+# print(f'img_norm:\n{img}')
+img = img * 255
+# print(f'img:\n{img}')
+img_show(img)
