@@ -3,6 +3,7 @@ from PIL import Image, ImageDraw
 import numpy as np
 
 from ch05.two_layer_net import TwoLayerNet
+from ch07.simple_convnet import SimpleConvNet
 from common.multi_layer_net import MultiLayerNet
 
 
@@ -61,7 +62,14 @@ class DrawingBoard:
         # print(data)  # 打印出 28x28 的矩阵
 
         # 这里你可以直接接入你的模型预测逻辑：
-        prediction = network.predict(data.reshape(1, 784))
+        if not isinstance(network,SimpleConvNet):
+            # 普通神经网
+            prediction = network.predict(data.reshape(1, 784))
+        else:
+            data = data.reshape(1, 1, 28, 28)
+            # 或者
+            # data = np.expand_dims(data, axis=0)
+            prediction = network.predict(data)
         print("预测结果:", np.argmax(prediction))
 
         return data
@@ -69,10 +77,13 @@ class DrawingBoard:
 
 if __name__ == "__main__":
     # 模型初始化
-    network = MultiLayerNet(
-        input_size=784, hidden_size_list=[100, 100, 100, 100],
-        output_size=10)
-    network.load_weight("Adam.npz")
+    # network = MultiLayerNet(
+    #     input_size=784, hidden_size_list=[100, 100, 100, 100],
+    #     output_size=10)
+    network = SimpleConvNet(input_dim=(1, 28, 28),
+                            conv_param={'filter_num': 30, 'filter_size': 5, 'pad': 0, 'stride': 1},
+                            hidden_size=100, output_size=10, weight_init_std=0.01)
+    network.load_params(file_name="D:\\Documents\\DeepLearningFromScratch\\ch07\\params.pkl")
     # weight = dict(np.load("model_weights.npz"))
     # network.load_params(weight)
 
