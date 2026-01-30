@@ -83,7 +83,7 @@ if __name__ == "__main__":
     network = SimpleConvNet(input_dim=(1, 28, 28),
                             conv_param={'filter_num': 30, 'filter_size': 5, 'pad': 0, 'stride': 1},
                             hidden_size=100, output_size=10, weight_init_std=0.01)
-    network.load_params(file_name="D:\\Documents\\DeepLearningFromScratch\\ch07\\params.pkl")
+    network.load_params(file_name="D:\\Documents\\DeepLearningFromScratch\\ch07\\params1769741000.pkl")
     # weight = dict(np.load("model_weights.npz"))
     # network.load_params(weight)
 

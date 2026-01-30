@@ -1,5 +1,7 @@
 # coding: utf-8
 import sys, os
+import time
+
 sys.path.append(os.pardir)  # 为了导入父目录的文件而进行的设定
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,15 +13,15 @@ from common.trainer import Trainer
 (x_train, t_train), (x_test, t_test) = load_mnist(flatten=False)
 
 # 处理花费时间较长的情况下减少数据 
-x_train, t_train = x_train[:5000], t_train[:5000]
-x_test, t_test = x_test[:1000], t_test[:1000]
+# x_train, t_train = x_train[:5000], t_train[:5000]
+# x_test, t_test = x_test[:1000], t_test[:1000]
 
 max_epochs = 20
 
 network = SimpleConvNet(input_dim=(1,28,28), 
                         conv_param = {'filter_num': 30, 'filter_size': 5, 'pad': 0, 'stride': 1},
                         hidden_size=100, output_size=10, weight_init_std=0.01)
-network.load_params(file_name="params.pkl")
+# network.load_params(file_name="params.pkl")
 trainer = Trainer(network, x_train, t_train, x_test, t_test,
                   epochs=max_epochs, mini_batch_size=100,
                   optimizer='Adam', optimizer_param={'lr': 0.001},
@@ -27,7 +29,7 @@ trainer = Trainer(network, x_train, t_train, x_test, t_test,
 trainer.train()
 
 # 保存参数
-# network.save_params("params.pkl")
+network.save_params(f"params{int(time.time())}.pkl")
 print("Saved Network Parameters!")
 
 # 绘制图形
